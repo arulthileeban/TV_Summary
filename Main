@@ -1,0 +1,34 @@
+import urllib2
+import BeautifulSoup
+
+show=raw_input('Enter show- ')
+season=raw_input('Enter season- ')
+show=show.replace(" ","_")
+i=0
+j=0
+Epi=0
+Title=[]
+summary=[]
+url="https://en.wikipedia.org/wiki/"+show+"_(season_"+season+")"
+uh=urllib2.urlopen(url)
+data=BeautifulSoup.BeautifulSoup(uh)
+table = data.find("table", { "class" : "wikitable plainrowheaders","style":"width:100%;" })
+for row in table.findAll("tr"):
+    i+=1
+    cells=row.findAll("td")
+
+    if len(cells)==7 :
+        Epi=int(cells[0].find(text=True))
+        Title=cells[1].findAll(text=True)
+        Title=''.join(Title)
+        print Epi,Title
+
+
+    elif len(cells)==1 :
+        summary=cells[0].findAll(text=True)
+        summary="".join(summary)
+        print summary
+
+    else:
+        continue
+
